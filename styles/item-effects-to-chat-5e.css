@@ -1,0 +1,82 @@
+/***************/
+/*    CHAT     */
+/***************/
+
+.item-effects-to-chat-5e-remove-blind.blind {
+  display: none;
+}
+
+.item-effects-to-chat-card .status-chip {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  gap: 0.5em;
+  padding: 0.3em;
+  place-content: space-between;
+  place-items: center;
+  width: 100%;
+}
+
+.item-effects-to-chat-card .item-effects-to-chat-apply {
+  padding: 0;
+  border: 0;
+  font-size: 1.6em;
+  flex: 0;
+  margin-left: auto;
+  background-color: transparent;
+  width: auto;
+  line-height: 1;
+}
+
+.item-effects-to-chat-card .item-effects-to-chat-apply:hover,
+.item-effects-to-chat-card .item-effects-to-chat-apply:focus {
+  box-shadow: none;
+  text-shadow: 0 0 8px var(--color-shadow-primary);
+}
+
+.item-effects-to-chat-list {
+  padding: 0;
+  margin: 0;
+}
+
+.item-effects-to-chat-list > li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 5px;
+}
+
+.item-effects-to-chat-list > li:not(:last-child) {
+  border-bottom: 0 !important;
+}
+
+.item-effects-to-chat-list .token-image {
+  margin-right: 0;
+  border-color: transparent;
+}
+
+.item-effects-to-chat-list h3 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.item-effects-to-chat-effects-list > li {
+  cursor: grab;
+}
+
+.item-effects-to-chat-combatant-summary {
+  font-size: 12px;
+  position: relative;
+}
+
+.item-effects-to-chat-combatant-summary-label {
+  display: inline-flex;
+  font-size: 1rem;
+}
+
+.item-effects-to-chat-combatant-summary .item-effects-to-chat-apply {
+  position: absolute;
+  right: 0;
+}

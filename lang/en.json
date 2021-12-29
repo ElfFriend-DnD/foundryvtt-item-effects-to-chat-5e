@@ -1,0 +1,8 @@
+{
+  "item-effects-to-chat-5e": {
+    "MESSAGE_HEADER": "Item Temporary Effects",
+    "TARGETED": "Targeted Tokens",
+    "APPLY_ALL": "Apply All Effects",
+    "APPLY_ALL_TO_ALL": "Apply All Effects to All Targets"
+  }
+}
