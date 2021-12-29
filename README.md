@@ -23,6 +23,10 @@ https://user-images.githubusercontent.com/7644614/147708014-12cd6997-0a59-47be-8
 
 Requires More Hooks 5e
 
+Super Charged by:
+- [Attack Roll Check D&D5e](https://github.com/ElfFriend-DnD/foundryvtt-attack-roll-check-5e)
+- [Auto Roll NPC Save D&D5e](https://github.com/ElfFriend-DnD/foundryvtt-auto-roll-npc-save-5e)
+
 Compatible with:
 - Core dnd5e roller
 - Minimal Rolling Enhancements
@@ -30,6 +34,7 @@ Compatible with:
 Mostly Compatible with:
 - Better Rolls 5e
 - Midi QOL
+
 
 I'm not actively supporting these two so if something breaks, I'm open to a PR but not invested.
 
