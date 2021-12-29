@@ -13,6 +13,12 @@ This module prints all Temporary Effects on an Item to Chat when that item is ro
 
 This module does not affect the Active Effect data structure or behavior in any way.
 
+![image](https://user-images.githubusercontent.com/7644614/147707503-713858cc-fd30-4d31-b320-3123ee612429.png)
+
+
+https://user-images.githubusercontent.com/7644614/147708014-12cd6997-0a59-47be-85cf-29d56eeb85d5.mp4
+
+
 ## Compatibility
 
 Requires More Hooks 5e
@@ -21,8 +27,11 @@ Compatible with:
 - Core dnd5e roller
 - Minimal Rolling Enhancements
 
-Not Compatible with:
+Mostly Compatible with:
 - Better Rolls 5e
 - Midi QOL
 
-If you're using Midi, automatic application of effects is already possible without this module. Do not use this with that.
+I'm not actively supporting these two so if something breaks, I'm open to a PR but not invested.
+
+If you're using Midi, automatic application of effects is already possible without this module.
+
