@@ -1,4 +1,3 @@
-import { ItemEffectsToChat5eActorSheet } from "./classes/actor.js";
 import { ItemEffectsToChat5eCanvas } from "./classes/canvas.js";
 import { ItemEffectsToChat5eChat } from "./classes/chat.js";
 import { ItemEffectsToChat5eItem } from "./classes/item.js";
@@ -19,8 +18,6 @@ Hooks.on("ready", async () => {
 
   // initialize item hooks
   ItemEffectsToChat5eItem.init();
-
-  ItemEffectsToChat5eActorSheet.init();
 });
 
 Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {

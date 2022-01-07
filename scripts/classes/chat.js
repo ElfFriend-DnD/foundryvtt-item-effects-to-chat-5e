@@ -97,6 +97,7 @@ export class ItemEffectsToChat5eChat {
    * Handle the Button presses for "Apply All" and "Apply All to All"
    */
   static _onClickApply = async (event) => {
+    ItemEffectsToChat5e.log('_onClickApply running');
     event.stopPropagation();
     const button = event.currentTarget;
     const action = button.dataset?.action;
@@ -112,22 +113,41 @@ export class ItemEffectsToChat5eChat {
       case 'apply-all-effects': {
         const li = $(button).closest('[data-token-id]');
         targetTokenIds.push(li.data('tokenId'));
+        break;
       }
       case 'apply-all-effects-to-all': {
         const targetedTokenIds = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'targetedTokenIds');
-        targetTokenIds.push(...targetedTokenIds)
+        targetTokenIds.push(...targetedTokenIds);
+        break;
       }
     }
 
+    let effectDatas = [];
+
+    for (const effectUuid of effectUuids) {
+      const effect = await fromUuid(effectUuid);
+      if (!effect) continue;
+
+      const effectData = {
+        id: effect.uuid, // fake statusId for Token.toggleEffect
+        ...effect.data,
+        disabled: false,
+        transfer: false,
+        origin: effect.parent.uuid,
+      }
+
+      effectDatas.push(effectData);
+    }
 
     ItemEffectsToChat5e.log('_onClickApply', {
       chatMessage,
       sceneId,
       targetTokenIds,
       effectUuids,
+      effectDatas,
     });
 
-    ItemEffectsToChat5eCanvas.applyEffectsToTokens(sceneId, targetTokenIds, effectUuids);
+    ItemEffectsToChat5eCanvas.applyEffectsToTokens(sceneId, targetTokenIds, effectDatas);
   }
 
   /**
@@ -170,26 +190,38 @@ export class ItemEffectsToChat5eChat {
    * The Drag Start event which populates data to create an effect on drop
    * @param {*} event 
    */
-  static _onDragStart = (event) => {
+  static _onDragStart = async (event) => {
     const li = event.currentTarget;
     const chatCard = $(li).closest('[data-message-id]');
     const chatId = chatCard.data('messageId');
     const chatMessage = game.messages.get(chatId);
 
+    if (!li.dataset.effectUuid) {
+      return;
+    }
+
     const { actorId, sceneId, tokenId } = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'sourceActor');
+
+    const effect = await fromUuid(li.dataset.effectUuid);
+
+    if (!effect) {
+      return;
+    }
 
     // Create drag data
     const dragData = {
       actorId,
       sceneId,
       tokenId,
+      type: "ActiveEffect",
+      data: {
+        id: effect.uuid, // fake statusId for Token.toggleEffect
+        ...effect.data,
+        disabled: false,
+        transfer: false,
+        origin: effect.parent.uuid,
+      }
     };
-
-    // Active Effect
-    if (li.dataset.effectUuid) {
-      dragData.type = "ActiveEffect";
-      dragData.effectUuid = li.dataset.effectUuid;
-    }
 
     ItemEffectsToChat5e.log('DragDrop dragStart:', {
       chatMessage,
@@ -244,7 +276,7 @@ export class ItemEffectsToChat5eChat {
       dropData,
     });
 
-    ItemEffectsToChat5eCanvas.applyEffectsToTokens(dropData.sceneId, [targetTokenId], [dropData.effectUuid]);
+    ItemEffectsToChat5eCanvas.applyEffectsToTokens(dropData.sceneId, [targetTokenId], [dropData.data]);
   }
 
   /**

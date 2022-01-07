@@ -11,8 +11,6 @@
 
 This module prints all Temporary Effects on an Item to Chat when that item is rolled. It also allows the GM to drag those effects onto tokens, or apply them to targeted tokens directly from the chat message.
 
-This module does not affect the Active Effect data structure or behavior in any way.
-
 ![image](https://user-images.githubusercontent.com/7644614/147707503-713858cc-fd30-4d31-b320-3123ee612429.png)
 
 
@@ -30,13 +28,12 @@ Super Charged by:
 Compatible with:
 - Core dnd5e roller
 - Minimal Rolling Enhancements
+- DAE
 
 Mostly Compatible with:
 - Better Rolls 5e
 - Midi QOL
 
-
 I'm not actively supporting these two so if something breaks, I'm open to a PR but not invested.
 
-If you're using Midi, automatic application of effects is already possible without this module.
-
+If you're using Midi, it has configuration settings to automatically apply item effects and makes this module largely redundant.

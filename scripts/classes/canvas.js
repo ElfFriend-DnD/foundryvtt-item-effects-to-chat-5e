@@ -1,4 +1,4 @@
-import { ItemEffectsToChat5eActor } from './actor.js';
+import { ItemEffectsToChat5e } from '../item-effects-to-chat-5e.js';
 
 /**
  * Handles all the logic related to Canvas dropping of effects
@@ -9,6 +9,12 @@ export class ItemEffectsToChat5eCanvas {
     Hooks.on('dropCanvasData', ItemEffectsToChat5eCanvas.handleCanvasDrop);
   }
 
+  /**
+   * Handles dropping an Active Effect on a canvas token
+   * @param {*} canvas 
+   * @param {*} dropData 
+   * @returns 
+   */
   static async handleCanvasDrop(canvas, dropData) {
     if (dropData.type !== "ActiveEffect") {
       return true;
@@ -36,27 +42,29 @@ export class ItemEffectsToChat5eCanvas {
       return true;
     }
 
-    await ItemEffectsToChat5eCanvas.applyEffectsToTokens(dropData.sceneId, targets.map(target => target.id), [dropData.effectUuid]);
+    await ItemEffectsToChat5eCanvas.applyEffectsToTokens(canvas.scene.id, targets.map(target => target.id), [dropData.data]);
 
     return true;
   }
 
   /**
-   * Takes in a set of tokenIds and an effect uuid to apply to the given tokens.
+   * Takes in a set of tokenIds and effect datas to apply to the given tokens.
+   * Leverages `Token.toggleEffect` to accomplish this
    * 
    * @param {string} sceneId - The scene the tokens are on
    * @param {string[]} tokenIds - Array of token ids being targeted
-   * @param {ActiveEffect} effectUuid - Active effect Uuid source to copy
+   * @param {ActiveEffect[]} effectDatas - Array of Active effect dropDatas
    * @returns {Promise<boolean>} - A promise which resolves if completed successfully
    */
-  static async applyEffectsToTokens(sceneId, tokenIds, effectUuids) {
-    if (!sceneId || !tokenIds.length || !effectUuids.length) {
+  static async applyEffectsToTokens(sceneId, tokenIds, effectDatas) {
+    if (!sceneId || !tokenIds.length || !effectDatas.length) {
       throw new Error('Unable to apply effect to tokens, missing required information');
     }
 
     const targetTokens = tokenIds
       .map(targetTokenId => game.scenes.get(sceneId).tokens?.get(targetTokenId))
-      .filter(token => !!token?.actor);
+      .filter(token => !!token?.actor)
+      .map(targetTokenDocument => targetTokenDocument.object);
 
     if (!targetTokens.length) {
       ui.notifications.error('There was an error applying the effect, the target might no longer exist.')
@@ -64,7 +72,13 @@ export class ItemEffectsToChat5eCanvas {
     }
 
     for (const targetToken of targetTokens) {
-      await ItemEffectsToChat5eActor.applyEffectToActor(targetToken.actor, effectUuids);
+      for (const effectData of effectDatas) {
+        ItemEffectsToChat5e.log('applyEffectsToTokens', targetToken, effectData);
+
+        await targetToken.toggleEffect({
+          ...effectData,
+        }, { active: true });
+      }
     }
     return true;
   }
