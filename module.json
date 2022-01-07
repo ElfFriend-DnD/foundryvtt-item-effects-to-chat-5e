@@ -2,7 +2,7 @@
   "name": "item-effects-to-chat-5e",
   "title": "Item Effects to Chat DnD5e",
   "description": "A module which allows a GM to interact with effects on rolled items from chat.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Andrew Krigline",
   "authors": [
     {
