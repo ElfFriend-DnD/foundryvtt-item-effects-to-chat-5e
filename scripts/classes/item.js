@@ -86,7 +86,8 @@ export class ItemEffectsToChat5eItem {
         }
       },
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-      speaker: { alias: game.i18n.localize(`${ItemEffectsToChat5e.MODULE_NAME}.MESSAGE_HEADER`) },
+      speaker: ChatMessage.getSpeaker({actor: this.item.actor}),
+      flavor: game.i18n.localize(`${ItemEffectsToChat5e.MODULE_NAME}.MESSAGE_HEADER`),
       content: html,
     }
 
