@@ -1,0 +1,8 @@
+{
+  "item-effects-to-chat-5e": {
+    "MESSAGE_HEADER": "Effect actifs de l'objet",
+    "TARGETED": "Tokens ciblés",
+    "APPLY_ALL": "Appliquer tous les effets",
+    "APPLY_ALL_TO_ALL": "Appliquer tous les effets à toutes les cibles"
+  }
+}
