@@ -31,9 +31,9 @@ export class ItemEffectsToChat5eItem {
       return;
     }
 
-    const easyEffectsItem = new ItemEffectsToChat5eItem(item, actor);
+    const itemEffectToChatItem = new ItemEffectsToChat5eItem(item, actor);
 
-    easyEffectsItem.createListChatCard()
+    itemEffectToChatItem.createListChatCard()
   }
 
   /**
@@ -56,7 +56,7 @@ export class ItemEffectsToChat5eItem {
       `modules/${ItemEffectsToChat5e.MODULE_NAME}/templates/item-effects-to-chat-card.hbs`,
       {
         targetedTokens,
-        effects: this.item.effects,
+        effects: temporaryEffects,
         isGM: game.user.isGM
       });
 
@@ -83,6 +83,11 @@ export class ItemEffectsToChat5eItem {
           },
           targetedTokenIds: targetedTokens.map(token => token.id),
           effectUuids: this.item.effects.map(effect => effect.uuid),
+          effectData: temporaryEffects.map(effect => ({
+            ...effect.toJSON(),
+            id: effect.uuid, // fake statusId for Token.toggleEffect
+            origin: this.item.uuid,
+          })), // necessary for consumables which destroy themselves
         }
       },
       type: CONST.CHAT_MESSAGE_TYPES.OTHER,

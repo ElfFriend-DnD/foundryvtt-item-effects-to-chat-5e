@@ -96,7 +96,7 @@ export class ItemEffectsToChat5eChat {
   /**
    * Handle the Button presses for "Apply All" and "Apply All to All"
    */
-  static _onClickApply = async (event) => {
+  static _onClickApply = (event) => {
     ItemEffectsToChat5e.log('_onClickApply running');
     event.stopPropagation();
     const button = event.currentTarget;
@@ -106,8 +106,6 @@ export class ItemEffectsToChat5eChat {
     const chatId = chatCard.data('messageId');
     const chatMessage = game.messages.get(chatId);
     const { actorId, sceneId, tokenId } = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'sourceActor');
-    const effectUuids = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'effectUuids');
-
     let targetTokenIds = [];
     switch (action) {
       case 'apply-all-effects': {
@@ -122,28 +120,21 @@ export class ItemEffectsToChat5eChat {
       }
     }
 
-    let effectDatas = [];
+    const effectDatas = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'effectData').map((data) => ({
+      ...data,
+      disabled: false,
+      transfer: false,
+    }));
 
-    for (const effectUuid of effectUuids) {
-      const effect = await fromUuid(effectUuid);
-      if (!effect) continue;
-
-      const effectData = {
-        id: effect.uuid, // fake statusId for Token.toggleEffect
-        ...effect.data,
-        disabled: false,
-        transfer: false,
-        origin: effect.parent.uuid,
-      }
-
-      effectDatas.push(effectData);
+    if (!effectDatas) {
+      ui.notifications.warn('This chat card is from before Effects to Chat 2.0, make a new card by reusing the item.');
+      return;
     }
 
     ItemEffectsToChat5e.log('_onClickApply', {
       chatMessage,
       sceneId,
       targetTokenIds,
-      effectUuids,
       effectDatas,
     });
 
@@ -190,21 +181,28 @@ export class ItemEffectsToChat5eChat {
    * The Drag Start event which populates data to create an effect on drop
    * @param {*} event 
    */
-  static _onDragStart = async (event) => {
+  static _onDragStart = (event) => {
     const li = event.currentTarget;
     const chatCard = $(li).closest('[data-message-id]');
     const chatId = chatCard.data('messageId');
     const chatMessage = game.messages.get(chatId);
 
-    if (!li.dataset.effectUuid) {
+    if (!li.dataset.effectUuid || !chatMessage) {
+      return;
+    }
+
+    const effectDatas = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'effectData');
+
+    if (!effectDatas) {
+      ui.notifications.warn('This chat card is from before Effects to Chat 2.0, make a new card by reusing the item.');
       return;
     }
 
     const { actorId, sceneId, tokenId } = chatMessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'sourceActor');
 
-    const effect = await fromUuid(li.dataset.effectUuid);
+    const effectData = effectDatas?.find((data) => data.id === li.dataset.effectUuid);
 
-    if (!effect) {
+    if (!effectData) {
       return;
     }
 
@@ -215,11 +213,9 @@ export class ItemEffectsToChat5eChat {
       tokenId,
       type: "ActiveEffect",
       data: {
-        id: effect.uuid, // fake statusId for Token.toggleEffect
-        ...effect.data,
+        ...effectData,
         disabled: false,
         transfer: false,
-        origin: effect.parent.uuid,
       }
     };
 
