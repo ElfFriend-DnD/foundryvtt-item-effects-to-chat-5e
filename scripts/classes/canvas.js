@@ -21,28 +21,33 @@ export class ItemEffectsToChat5eCanvas {
     }
 
     const gridSize = canvas.scene?.data.grid
-
-    const dropLocation = {
-      x: dropData.x - gridSize / 2,
-      y: dropData.y - gridSize / 2,
-      height: gridSize,
-      width: gridSize
-    };
+    const halfGridSize = gridSize / 2;
 
     // Get the set of targeted tokens
-    const targets = (canvas.tokens?.placeables ?? []).filter(token => {
+    const target = (canvas.tokens?.placeables ?? []).filter(token => {
       if (!token.visible) return false;
+
+
+      // take token width/height multipliers into account when calculating drop area for this token
+      const dropLocation = {
+        x: dropData.x - halfGridSize * token.data.width,
+        y: dropData.y - halfGridSize * token.data.height,
+        height: gridSize * token.data.height,
+        width: gridSize * token.data.width,
+      };
+
       return Number.between(token.center.x, dropLocation.x, dropLocation.x + dropLocation.width)
         && Number.between(token.center.y, dropLocation.y, dropLocation.y + dropLocation.height);
     })
-      .filter(token => !!token.actor);
+      .filter(token => !!token.actor)
+      .pop(); // only want to drag this onto one token at a time
 
-    if (!targets.length) {
+    if (!target) {
       // was not dragged onto a token
       return true;
     }
 
-    await ItemEffectsToChat5eCanvas.applyEffectsToTokens(canvas.scene.id, targets.map(target => target.id), [dropData.data]);
+    await ItemEffectsToChat5eCanvas.applyEffectsToTokens(canvas.scene.id, [target.id], [dropData.data]);
 
     return true;
   }
