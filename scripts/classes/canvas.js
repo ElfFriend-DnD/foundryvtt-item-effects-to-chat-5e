@@ -20,20 +20,16 @@ export class ItemEffectsToChat5eCanvas {
       return true;
     }
 
-    const gridSize = canvas.scene?.data.grid
-    const halfGridSize = gridSize / 2;
-
     // Get the set of targeted tokens
     const target = (canvas.tokens?.placeables ?? []).filter(token => {
       if (!token.visible) return false;
 
-
       // take token width/height multipliers into account when calculating drop area for this token
       const dropLocation = {
-        x: dropData.x - halfGridSize * token.data.width,
-        y: dropData.y - halfGridSize * token.data.height,
-        height: gridSize * token.data.height,
-        width: gridSize * token.data.width,
+        x: dropData.x - token.hitArea.height / 2,
+        y: dropData.y - token.hitArea.width / 2,
+        height: token.hitArea.height,
+        width: token.hitArea.width,
       };
 
       return Number.between(token.center.x, dropLocation.x, dropLocation.x + dropLocation.width)

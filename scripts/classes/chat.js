@@ -19,7 +19,7 @@ export class ItemEffectsToChat5eChat {
     Hooks.on('renderChatMessage', this.handleRenderChatMessage);
 
     Hooks.on('renderChatPopout', (app, html) => {
-      if (app.message?.data.flags?.["item-effects-to-chat-5e"]?.isEffectListCard) {
+      if (app.message?.getFlag(ItemEffectsToChat5e.MODULE_NAME, isEffectListCard)) {
         this._registerChatListeners(html);
       }
     })
@@ -146,8 +146,8 @@ export class ItemEffectsToChat5eChat {
    */
   static handleRenderChatMessage = async (chatmessage, html) => {
 
-    const dragDroppable = chatmessage.data.flags?.['auto-roll-npc-save-5e']?.isResultCard 
-      || chatmessage.data.flags?.['attack-roll-check-5e']?.isResultCard
+    const dragDroppable = chatmessage.flags?.['auto-roll-npc-save-5e']?.isResultCard 
+      || chatmessage.flags?.['attack-roll-check-5e']?.isResultCard
       || chatmessage.getFlag(ItemEffectsToChat5e.MODULE_NAME, 'isEffectListCard');
 
     if (game.user.isGM && dragDroppable) {
@@ -212,6 +212,7 @@ export class ItemEffectsToChat5eChat {
       sceneId,
       tokenId,
       type: "ActiveEffect",
+      uuid: li.dataset.effectUuid,
       data: {
         ...effectData,
         disabled: false,

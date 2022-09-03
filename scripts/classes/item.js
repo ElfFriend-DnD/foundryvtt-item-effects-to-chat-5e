@@ -13,7 +13,7 @@ export class ItemEffectsToChat5eItem {
    * Register Hooks
    */
   static init() {
-    Hooks.on('Item5e.roll', ItemEffectsToChat5eItem.handleItemRoll);
+    Hooks.on('dnd5e.useItem', ItemEffectsToChat5eItem.handleUseItem);
   }
 
   /**
@@ -21,7 +21,7 @@ export class ItemEffectsToChat5eItem {
    * @param {*} item 
    * @returns 
    */
-  static handleItemRoll = async (item) => {
+  static handleUseItem = async (item) => {
     if (!item.effects.size) {
       return;
     }
@@ -69,7 +69,7 @@ export class ItemEffectsToChat5eItem {
     const messageData = {
       whisper: ChatMessage.getWhisperRecipients('gm'),
       blind: true,
-      user: game.user.data._id,
+      user: game.user._id,
       flags: {
         core: {
           canPopout: true

@@ -1,8 +1,8 @@
 {
-  "name": "item-effects-to-chat-5e",
+  "id": "item-effects-to-chat-5e",
   "title": "Item Effects to Chat DnD5e",
   "description": "A module which allows a GM to interact with effects on rolled items from chat.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Andrew Krigline",
   "authors": [
     {
@@ -13,7 +13,6 @@
       "patreon": "ElfFriend_DnD"
     }
   ],
-  "system": [ "dnd5e" ],
   "esmodules": [
     "./scripts/item-effects-to-chat-5e.js"
   ],
@@ -32,16 +31,18 @@
       "path": "lang/fr.json"
     }
   ],
-  "dependencies": [
-    {
-      "name": "more-hooks-5e"
-    },
-    {
-      "name": "lib-wrapper"
-    }
-  ],
-  "minimumCoreVersion": "0.8.9",
-  "compatibleCoreVersion": "9",
+  "relationships": {
+    "systems": [{
+      "id": "dnd5e",
+      "type": "system",
+      "compatibility": {
+        "minimum": "2.0.0"
+      }
+    }]
+  },
+  "compatibility": {
+    "minimum": 10
+  },
   "url": "https://github.com/ElfFriend-DnD/foundryvtt-item-effects-to-chat-5e",
   "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-item-effects-to-chat-5e/issues",
   "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-item-effects-to-chat-5e/releases",
