@@ -13,7 +13,7 @@ export class ItemEffectsToChat5eItem {
    * Register Hooks
    */
   static init() {
-    Hooks.on('dnd5e.useItem', ItemEffectsToChat5eItem.handleUseItem);
+    Hooks.on(`${game.system.id}.useItem`, ItemEffectsToChat5eItem.handleUseItem);
   }
 
   /**
@@ -57,7 +57,8 @@ export class ItemEffectsToChat5eItem {
       {
         targetedTokens,
         effects: temporaryEffects,
-        isGM: game.user.isGM
+        isGM: game.user.isGM,
+        systemID: game.system.id
       });
 
     ItemEffectsToChat5e.log('Creating Card:', {
