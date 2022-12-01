@@ -1,5 +1,5 @@
 <div class="item-effects-to-chat-card">
-  <ul class="dnd5e chat-card item-effects-to-chat-list item-effects-to-chat-effects-list">
+  <ul class="{{systemID}} chat-card item-effects-to-chat-list item-effects-to-chat-effects-list">
     {{#each effects}}
     <li class="card-header" data-effect-uuid="{{uuid}}" {{#if @root/isGM}}draggable="true" {{/if}}>
       <img class="token-image" src="{{icon}}" title="{{label}}" width="36" height="36">
@@ -24,7 +24,7 @@
       </button>
     </summary>
     
-    <ul class="dnd5e chat-card item-effects-to-chat-list item-effects-to-chat-combatant-list">
+    <ul class="{{systemID}} chat-card item-effects-to-chat-list item-effects-to-chat-combatant-list">
       {{#each targetedTokens}}
       <li class="card-header" data-token-id="{{id}}">
         <img class="token-image" src="{{document.texture.src}}" title="{{name}}" width="36" height="36" style="transform: rotate({{document.rotation}}deg);">
